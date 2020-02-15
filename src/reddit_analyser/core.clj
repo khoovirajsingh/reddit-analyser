@@ -58,3 +58,30 @@
   [posts]
   (reduce links-posted-helper [] posts))
 
+(def ui-choices
+  "1: All posts
+2: Only good posts
+3: Average score
+4: Author post count
+5: Author total score
+6: Links posted
+Enter choice:\n")
+
+(defn run-ui
+  [choice posts]
+  (if (empty? choice)
+    (println "done.")
+    (do (clojure.pprint/pprint (case choice
+                                 "1" posts
+                                 "2" (only-good-posts posts)
+                                 "3" (average-score posts)
+                                 "4" (author-post-count posts)
+                                 "5" (author-total-score posts)
+                                 "6" (links-posted posts)
+                                 (println ui-choices)))
+        (run-ui (read-line) posts))))
+
+(defn -main
+  [& args]
+  (do (println ui-choices)
+      (run-ui (read-line) (get-posts))))
