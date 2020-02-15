@@ -40,3 +40,11 @@
   (let [authors (map :author posts)]
     (reduce post-count-helper {} authors)))
 
+(defn total-score-helper
+  [acc x]
+  (update acc (:author x) (fnil (partial + (:score x)) 0)))
+
+(defn author-total-score
+  [posts]
+  (reduce total-score-helper {} posts))
+
