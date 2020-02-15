@@ -8,6 +8,10 @@
 
 (def url "https://www.reddit.com/r/Clojure.json")
 
-(parse-string (:body (client/get url options)))
+(parse-string (:body (client/get url options)) true)
 
+(defn get-posts
+  []
+  (let [body (:body (client/get url options))]
+    (map :data (:children (:data (parse-string body true))))))
 
