@@ -17,3 +17,7 @@
         children (:children parsed-body)]
     (map :data children)))
 
+(defn good-posts?
+  [post]
+  (> (:score post) 15))
+
