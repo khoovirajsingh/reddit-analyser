@@ -21,3 +21,7 @@
   [post]
   (> (:score post) 15))
 
+(defn only-good-posts
+  [posts]
+  (filter good-posts? posts))
+
