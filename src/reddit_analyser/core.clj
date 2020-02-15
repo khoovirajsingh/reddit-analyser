@@ -2,9 +2,6 @@
   (:require [clj-http.client :as client])
   (:gen-class))
 
-(defn -main
-  "I don't do a whole lot ... yet."
-  [& args]
-  (println (client/get "http://www.example.com/")))
-
-(client/get "http://www.example.com/")
+(def options {:headers {"User-agent" "bond-007"}})
+(def url "https://www.reddit.com/r/Clojure.json")
+(client/get url options)
