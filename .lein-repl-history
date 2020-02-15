@@ -273,3 +273,101 @@
   (reduce total-score-helper {} posts))
 )
 (author-total-score (get-posts))
+(do
+(ns reddit-analyser.core
+  (:require [clj-http.client :as client] 
+            [cheshire.core :refer [parse-string]])  
+  (:gen-class))
+(def options {:headers {"User-agent" "bond-007"}
+              :query-params {:limit 100}})
+(def url "https://www.reddit.com/r/Clojure.json")
+(parse-string (:body (client/get url options)) true)
+(defn get-posts
+  []
+  (let [body (:body (client/get url options))
+        parsed-body (parse-string body true)
+        children (:children (:data parsed-body))]
+    (map :data children)))
+(defn good-post?
+  [post]
+  (> (:score post) 15))
+(defn only-good-posts
+  [posts]
+  (filter good-post? posts))
+(defn average-score
+  [posts]
+  (let [post-count (count posts)
+        total-score (reduce + (map :score posts))]
+    (float (/ total-score post-count))))
+(defn post-count-helper
+  [acc x]
+  (update acc x (fnil inc 0)))
+(defn author-post-count
+  [posts]
+  (let [authors (map :author posts)]
+    (reduce post-count-helper {} authors)))
+(defn total-score-helper
+  [acc x]
+  (update acc (:author x) (fnil (partial + (:score x)) 0)))
+(defn author-total-score
+  [posts]
+  (reduce total-score-helper {} posts))
+(defn links-posted-helper
+  [acc x]
+  (if (empty? (:selftext x))
+    (conj acc (:url x))
+    acc))
+(defn links-posted
+  [posts]
+  (reduce links-posted-helper {} posts))
+)
+(links-posted (get-posts))
+(do
+(ns reddit-analyser.core
+  (:require [clj-http.client :as client] 
+            [cheshire.core :refer [parse-string]])  
+  (:gen-class))
+(def options {:headers {"User-agent" "bond-007"}
+              :query-params {:limit 100}})
+(def url "https://www.reddit.com/r/Clojure.json")
+(parse-string (:body (client/get url options)) true)
+(defn get-posts
+  []
+  (let [body (:body (client/get url options))
+        parsed-body (parse-string body true)
+        children (:children (:data parsed-body))]
+    (map :data children)))
+(defn good-post?
+  [post]
+  (> (:score post) 15))
+(defn only-good-posts
+  [posts]
+  (filter good-post? posts))
+(defn average-score
+  [posts]
+  (let [post-count (count posts)
+        total-score (reduce + (map :score posts))]
+    (float (/ total-score post-count))))
+(defn post-count-helper
+  [acc x]
+  (update acc x (fnil inc 0)))
+(defn author-post-count
+  [posts]
+  (let [authors (map :author posts)]
+    (reduce post-count-helper {} authors)))
+(defn total-score-helper
+  [acc x]
+  (update acc (:author x) (fnil (partial + (:score x)) 0)))
+(defn author-total-score
+  [posts]
+  (reduce total-score-helper {} posts))
+(defn links-posted-helper
+  [acc x]
+  (if (empty? (:selftext x))
+    (conj acc (:url x))
+    acc))
+(defn links-posted
+  [posts]
+  (reduce links-posted-helper [] posts))
+)
+(links-posted (get-posts))

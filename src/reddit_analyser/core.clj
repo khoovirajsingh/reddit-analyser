@@ -48,3 +48,13 @@
   [posts]
   (reduce total-score-helper {} posts))
 
+(defn links-posted-helper
+  [acc x]
+  (if (empty? (:selftext x))
+    (conj acc (:url x))
+    acc))
+
+(defn links-posted
+  [posts]
+  (reduce links-posted-helper [] posts))
+
