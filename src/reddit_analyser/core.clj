@@ -14,10 +14,10 @@
   []
   (let [body (:body (client/get url options))
         parsed-body (parse-string body true)
-        children (:children parsed-body)]
+        children (:children (:data parsed-body))]
     (map :data children)))
 
-(defn good-posts?
+(defn good-post?
   [post]
   (> (:score post) 15))
 
