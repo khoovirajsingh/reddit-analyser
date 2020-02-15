@@ -23,5 +23,5 @@
 
 (defn only-good-posts
   [posts]
-  (filter good-posts? posts))
+  (filter good-post? posts))
 
