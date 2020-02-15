@@ -1,5 +1,6 @@
 (ns reddit-analyser.core
-  (:require [clj-http.client :as client])
+  (:require [clj-http.client :as client] 
+            [cheshire.core :refer [parse-string]])  
   (:gen-class))
 
 (def options {:headers {"User-agent" "bond-007"}
@@ -7,4 +8,6 @@
 
 (def url "https://www.reddit.com/r/Clojure.json")
 
-(client/get url options)
+(parse-string (:body (client/get url options)))
+
+

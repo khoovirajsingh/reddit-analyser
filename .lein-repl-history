@@ -1,2 +1,4 @@
 (client/get "http://www.example.com/")
 (client/get url options)
+(:body (client/get url options))
+(parse-string (:body (client/get url options)))
