@@ -371,3 +371,8 @@
   (reduce links-posted-helper [] posts))
 )
 (links-posted (get-posts))
+(fn [x] (+ x 10))
+(def add-10 (fn [x] (+ x 10)))
+add-10
+(add-10)
+(add-10 1)
