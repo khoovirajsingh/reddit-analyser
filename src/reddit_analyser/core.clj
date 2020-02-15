@@ -12,6 +12,8 @@
 
 (defn get-posts
   []
-  (let [body (:body (client/get url options))]
-    (map :data (:children (:data (parse-string body true))))))
+  (let [body (:body (client/get url options))
+        parsed-body (parse-string body true)
+        children (:children parsed-body)]
+    (map :data children)))
 

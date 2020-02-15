@@ -2,3 +2,4 @@
 (client/get url options)
 (:body (client/get url options))
 (parse-string (:body (client/get url options)))
+(get-posts)
