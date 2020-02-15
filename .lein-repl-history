@@ -118,3 +118,74 @@
   (filter good-post? posts))
 )
 (count (only-good-posts (get-posts)))
+(reduce + 0 [1 2 3 4 5])
+(conj [1 2 3] 1)
+(conj [1 2 3] [1 2])
+(conj [1 2 3])
+(conj #{} [:a :b :c])
+(conj #{} :a)
+(conj [] "a")
+(conj [] "b")
+(count "abc")
+(is-seq? [])
+(seq? [])
+(seq? [1])
+(seq? '(1))
+(seq? "a")
+(reduce conj [] "Rich Hickey")
+(do
+(ns reddit-analyser.core
+  (:require [clj-http.client :as client] 
+            [cheshire.core :refer [parse-string]])  
+  (:gen-class))
+(def options {:headers {"User-agent" "bond-007"}
+              :query-params {:limit 100}})
+(def url "https://www.reddit.com/r/Clojure.json")
+(parse-string (:body (client/get url options)) true)
+(defn get-posts
+  []
+  (let [body (:body (client/get url options))
+        parsed-body (parse-string body true)
+        children (:children (:data parsed-body))]
+    (map :data children)))
+(defn good-post?
+  [post]
+  (> (:score post) 15))
+(defn only-good-posts
+  [posts]
+  (filter good-post? posts))
+(defn average-score
+  [posts]
+  (let [post-count (count posts)
+        total-score (reduce + (map :score posts))]
+    (/ total-score post-count)))
+)
+(average-score (get-posts))
+(do
+(ns reddit-analyser.core
+  (:require [clj-http.client :as client] 
+            [cheshire.core :refer [parse-string]])  
+  (:gen-class))
+(def options {:headers {"User-agent" "bond-007"}
+              :query-params {:limit 100}})
+(def url "https://www.reddit.com/r/Clojure.json")
+(parse-string (:body (client/get url options)) true)
+(defn get-posts
+  []
+  (let [body (:body (client/get url options))
+        parsed-body (parse-string body true)
+        children (:children (:data parsed-body))]
+    (map :data children)))
+(defn good-post?
+  [post]
+  (> (:score post) 15))
+(defn only-good-posts
+  [posts]
+  (filter good-post? posts))
+(defn average-score
+  [posts]
+  (let [post-count (count posts)
+        total-score (reduce + (map :score posts))]
+    (float (/ total-score post-count))))
+)
+(average-score (get-posts))

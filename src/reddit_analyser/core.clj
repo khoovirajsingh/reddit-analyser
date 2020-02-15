@@ -25,3 +25,9 @@
   [posts]
   (filter good-post? posts))
 
+(defn average-score
+  [posts]
+  (let [post-count (count posts)
+        total-score (reduce + (map :score posts))]
+    (float (/ total-score post-count))))
+
