@@ -1,1 +1,2 @@
 (client/get "http://www.example.com/")
+(client/get url options)
