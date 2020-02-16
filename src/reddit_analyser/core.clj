@@ -32,13 +32,14 @@
   [posts]
   (frequencies (map :author posts)))
 
-(defn total-score-helper
-  [acc x]
-  (update acc (:author x) (fnil (partial + (:score x)) 0)))
-
 (defn author-total-score
   [posts]
-  (reduce total-score-helper {} posts))
+  (reduce (fn [acc m]
+            (update acc
+                    (:author m)
+                    (fnil (partial + (:score m)) 0)))
+          {}
+          posts))
 
 (defn links-posted-helper
   [acc x]
