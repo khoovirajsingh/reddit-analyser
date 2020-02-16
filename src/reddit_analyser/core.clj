@@ -41,15 +41,14 @@
           {}
           posts))
 
-(defn links-posted-helper
-  [acc x]
-  (if (empty? (:selftext x))
-    (conj acc (:url x))
-    acc))
-
 (defn links-posted
   [posts]
-  (reduce links-posted-helper [] posts))
+  (reduce (fn [acc post]
+            (if (empty? (:selftext post))
+              (conj acc (:url post))
+              acc))
+          []
+          posts))
 
 (def ui-choices
   "1: All posts
