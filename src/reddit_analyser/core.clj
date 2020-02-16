@@ -28,14 +28,9 @@
         total-score (reduce + (map :score posts))]
     (float (/ total-score post-count))))
 
-(defn post-count-helper
-  [acc x]
-  (update acc x (fnil inc 0)))
-
 (defn author-post-count
   [posts]
-  (let [authors (map :author posts)]
-    (reduce post-count-helper {} authors)))
+  (frequencies (map :author posts)))
 
 (defn total-score-helper
   [acc x]
