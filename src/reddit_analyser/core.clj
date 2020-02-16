@@ -12,18 +12,15 @@
 
 (defn get-posts
   []
-  (let [body (:body (client/get url options))
-        parsed-body (parse-string body true)
-        children (:children (:data parsed-body))]
-    (map :data children)))
-
-(defn good-post?
-  [post]
-  (> (:score post) 15))
+  (let [body (:body (client/get url options))]
+    (->> (parse-string body true)
+         (:data)
+         (:children)
+         (map :data))))
 
 (defn only-good-posts
   [posts]
-  (filter good-post? posts))
+  (filter #(> (:score %) 15) posts))
 
 (defn average-score
   [posts]
